@@ -1,7 +1,7 @@
 ---
 API: 2.1
 OpenSesame: 3.2.5
-Platform: nt
+Platform: posix
 ---
 set width 1024
 set uniform_coordinates yes
@@ -13,7 +13,10 @@ set sound_sample_size -16
 set sound_freq 48000
 set sound_channels 2
 set sound_buf_size 1024
+set sampler_backend legacy
 set round_decimals 2
+set mouse_backend xpyriment
+set keyboard_backend legacy
 set height 768
 set fullscreen no
 set form_clicks no
@@ -23,11 +26,13 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "f:\\Program Files\\OpenSesame\\share\\opensesame_resources\\templates"
+set experiment_path "/Users/vashisthdalmia/Documents/GitHub/usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
 set compensation 0
+set color_backend legacy
+set clock_backend legacy
 set canvas_backend xpyriment
 set bidi yes
 set background black
@@ -124,8 +129,8 @@ define sketchpad end_of_practice
 define sequence experiment
 	set flush_keyboard yes
 	set description "The main sequence of the experiment"
-	run about_this_template always
 	run instructions always
+	run new_pygaze_init always
 	run training always
 	run end_of_practice always
 	run experimental_loop always
@@ -258,11 +263,33 @@ define pygaze_drift_correct new_pygaze_drift_correct
 	set draw_target yes
 	set description "Perform eye-tracker drift correction"
 
+define pygaze_init new_pygaze_init
+	set tracker_type "Simple dummy"
+	set tobiiglasses_udpport 49152
+	set tobiiglasses_address "192.168.71.50"
+	set smi_send_port 4444
+	set smi_recv_port 5555
+	set smi_ip "127.0.0.1"
+	set sacc_vel_thr 35
+	set sacc_acc_thr 9500
+	set eyelink_pupil_size_mode area
+	set eyelink_force_drift_correct yes
+	set description "Initialize and calibrate eye tracker"
+	set calibrate yes
+	set calbeep yes
+	set _logfile automatic
+
 define pygaze_log new_pygaze_log
 	set throttle 2
 	set msg ""
 	set description "Writes information to the eye-tracker logfile"
 	set auto_log yes
+
+define pygaze_log new_pygaze_log_1
+	set throttle 2
+	set msg ""
+	set description "Writes information to the eye-tracker logfile"
+	set auto_log no
 
 define pygaze_start_recording new_pygaze_start_recording
 	set status_msg start_trial
