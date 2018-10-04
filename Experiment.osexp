@@ -1,7 +1,7 @@
 ---
 API: 2.1
 OpenSesame: 3.2.5
-Platform: posix
+Platform: nt
 ---
 set width 1024
 set uniform_coordinates yes
@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "/Users/vashisthdalmia/Documents/GitHub/usermodels"
+set experiment_path "C:/Users/Daan/Documents/GitHub/usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
@@ -114,6 +114,52 @@ define sequence blocksequence
 	run instructions2 always
 	run reversal always
 
+define inline_script collect_pupil_trace
+	set description "Executes Python code"
+	___run__
+	if 'dummy' in exp.items['pygaze_init'].tracker_type:
+		pylink = None
+	else:
+		import pylink
+	import numpy as np
+	
+	def collectPupilTrace(dur, fd=10):
+		
+		"""
+		desc:
+			Returns an array of recorded pupil-size values.
+			
+		arguments:
+			itemArray:		An ItemArray object.
+			dur:			The recording duration.
+			fd:				The frame duration in milliseconds.
+			
+		returns:
+			A numpy array that with a dur/fd length.
+		"""
+		
+		t0 = self.time()
+		a = np.zeros(dur/fd)
+		_dt = 0
+		#df = open(('F:\Documents\HMC\User Models\pupildata.txt'),'a')
+		while _dt < dur:		
+			if pylink != None:
+				ps = eyetracker.pupil_size()
+			else:
+				# Use Y coordinate of mouse
+				#ps = my_mouse.get_pos()[0][1]+var.height/2
+				ps = 2
+			
+			dt = self.time()-t0
+	
+			a[int(_dt/fd):int(dt/fd)] = ps
+			_dt = dt
+			#df.write(str(ps))
+		#df.close()		
+		return a
+	__end__
+	set _prepare ""
+
 define sketchpad end_of_experiment
 	set start_response_interval no
 	set duration keypress
@@ -130,7 +176,8 @@ define sequence experiment
 	set flush_keyboard yes
 	set description "The main sequence of the experiment"
 	run instructions always
-	run new_pygaze_init always
+	run pygaze_init always
+	run collect_pupil_trace always
 	run training always
 	run end_of_practice always
 	run experimental_loop always
@@ -160,12 +207,12 @@ define feedback feedback
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Your average response time was [avg_rt]ms<br /><br />Your accuracy was [acc]%<br /><br />Press any key to continue" x=0 y=0 z_index=0
 
 define sketchpad fixation_cross
-	set duration 3500
+	set duration 1500
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
 
 define sketchpad fixation_cross_1
-	set duration 3500
+	set duration 1500
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
 
@@ -208,7 +255,23 @@ define logger logger
 	set description "Logs experimental data"
 	set auto_log yes
 
+define inline_script new_inline_script
+	set description "Executes Python code"
+	___run__
+	var.pupilsizes = collectPupilTrace(5000)
+	__end__
+	set _prepare ""
+
+define inline_script new_inline_script_1
+	set description "Executes Python code"
+	set _run "var.pupilsizes = collectPupilTrace(4000)"
+	set _prepare ""
+
 define logger new_logger
+	set description "Logs experimental data"
+	set auto_log yes
+
+define logger new_logger_1
 	set description "Logs experimental data"
 	set auto_log yes
 
@@ -263,21 +326,14 @@ define pygaze_drift_correct new_pygaze_drift_correct
 	set draw_target yes
 	set description "Perform eye-tracker drift correction"
 
-define pygaze_init new_pygaze_init
-	set tracker_type "Simple dummy"
-	set tobiiglasses_udpport 49152
-	set tobiiglasses_address "192.168.71.50"
-	set smi_send_port 4444
-	set smi_recv_port 5555
-	set smi_ip "127.0.0.1"
-	set sacc_vel_thr 35
-	set sacc_acc_thr 9500
-	set eyelink_pupil_size_mode area
-	set eyelink_force_drift_correct yes
-	set description "Initialize and calibrate eye tracker"
-	set calibrate yes
-	set calbeep yes
-	set _logfile automatic
+define pygaze_drift_correct new_pygaze_drift_correct_1
+	set ypos 0
+	set xpos 0
+	set target_style default
+	set target_color "[foreground]"
+	set fixation_triggered no
+	set draw_target yes
+	set description "Perform eye-tracker drift correction"
 
 define pygaze_log new_pygaze_log
 	set throttle 2
@@ -291,11 +347,25 @@ define pygaze_log new_pygaze_log_1
 	set description "Writes information to the eye-tracker logfile"
 	set auto_log no
 
+define pygaze_log new_pygaze_log_2
+	set throttle 2
+	set msg ""
+	set description "Writes information to the eye-tracker logfile"
+	set auto_log no
+
 define pygaze_start_recording new_pygaze_start_recording
 	set status_msg start_trial
 	set description "Puts the eye tracker into recording mode"
 
+define pygaze_start_recording new_pygaze_start_recording_1
+	set status_msg start_trial
+	set description "Puts the eye tracker into recording mode"
+
 define pygaze_stop_recording new_pygaze_stop_recording
+	set status_msg stop_trial
+	set description "Stops recording of eye tracking data"
+
+define pygaze_stop_recording new_pygaze_stop_recording_1
 	set status_msg stop_trial
 	set description "Stops recording of eye tracking data"
 
@@ -318,6 +388,22 @@ define form_text_display practice_instructions
 	widget 0 1 3 1 label center=no text="[form_text]"
 	widget 1 2 1 1 button text="[ok_text]"
 
+
+define pygaze_init pygaze_init
+	set tracker_type "Simple dummy"
+	set tobiiglasses_udpport 49152
+	set tobiiglasses_address "192.168.71.50"
+	set smi_send_port 4444
+	set smi_recv_port 5555
+	set smi_ip "127.0.0.1"
+	set sacc_vel_thr 35
+	set sacc_acc_thr 9500
+	set eyelink_pupil_size_mode area
+	set eyelink_force_drift_correct yes
+	set description "Initialize and calibrate eye tracker"
+	set calibrate yes
+	set calbeep yes
+	set _logfile automatic
 
 define reset_feedback reset_feedback
 	set description "Resets the feedback variables, such as 'avg_rt' and 'acc'"
@@ -393,6 +479,7 @@ define sequence trial_sequence
 	run new_pygaze_drift_correct always
 	run new_pygaze_start_recording always
 	run fixation_cross always
+	run new_inline_script always
 	run arithmetic_task always
 	run new_pygaze_log always
 	run new_logger always
@@ -401,7 +488,13 @@ define sequence trial_sequence
 define sequence trial_sequence_1
 	set flush_keyboard yes
 	set description "A single trial"
+	run new_pygaze_drift_correct_1 always
+	run new_pygaze_start_recording_1 always
 	run fixation_cross_1 always
 	run letter_task_1 always
+	run new_inline_script_1 always
 	run blank_screen_1 always
+	run new_pygaze_log_2 always
+	run new_logger_1 always
+	run new_pygaze_stop_recording_1 always
 
