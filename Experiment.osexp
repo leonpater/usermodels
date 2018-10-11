@@ -1,6 +1,6 @@
 ---
-API: 2.1
-OpenSesame: 3.2.5
+API: 2
+OpenSesame: 3.1.4
 Platform: nt
 ---
 set width 1024
@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "C:/Users/Daan/Documents/GitHub/usermodels"
+set experiment_path "D:/usermodels/usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
@@ -93,7 +93,7 @@ define loop arithmetic
 	run trial_sequence
 
 define sketchpad arithmetic_task
-	set duration 5000
+	set duration 1
 	set description "Displays stimuli"
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=always text="[question_no]" x=0 y=0 z_index=0
 
@@ -113,6 +113,11 @@ define sequence blocksequence
 	run arithmetic always
 	run instructions2 always
 	run reversal always
+
+define inline_script calc_slope
+	set description "Executes Python code"
+	set _run "var.avg = sum(var.pupilsizes) / len(var.pupilsizes)"
+	set _prepare ""
 
 define inline_script collect_pupil_trace
 	set description "Executes Python code"
@@ -216,6 +221,14 @@ define sketchpad fixation_cross_1
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
 
+define inline_script getdata
+	set description "Executes Python code"
+	___run__
+	sleep(1.5) # in seconds
+	var.pupilsizes = collectPupilTrace(200)
+	__end__
+	set _prepare "from time import sleep"
+
 define sketchpad instructions
 	set start_response_interval no
 	set duration keypress
@@ -254,13 +267,6 @@ define sketchpad letter_task_1
 define logger logger
 	set description "Logs experimental data"
 	set auto_log yes
-
-define inline_script new_inline_script
-	set description "Executes Python code"
-	___run__
-	var.pupilsizes = collectPupilTrace(5000)
-	__end__
-	set _prepare ""
 
 define inline_script new_inline_script_1
 	set description "Executes Python code"
@@ -456,6 +462,24 @@ define sketchpad sketchpad
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
 
+define inline_script test
+	set description "Executes Python code"
+	___run__
+	var.t1 = self.time()
+	var.t2 = var.t1 - var.t0
+	__end__
+	set _prepare ""
+
+define inline_script test1
+	set description "Executes Python code"
+	set _run "var.t0 = self.time()"
+	set _prepare ""
+
+define inline_script test2
+	set description "Executes Python code"
+	set _run "var.t1 = self.time() - var.t0()"
+	set _prepare ""
+
 define loop training
 	set source_file ""
 	set source table
@@ -479,11 +503,14 @@ define sequence trial_sequence
 	run new_pygaze_drift_correct always
 	run new_pygaze_start_recording always
 	run fixation_cross always
-	run new_inline_script always
+	run test1 always
 	run arithmetic_task always
+	run getdata always
+	run test always
 	run new_pygaze_log always
 	run new_logger always
 	run new_pygaze_stop_recording always
+	run calc_slope always
 
 define sequence trial_sequence_1
 	set flush_keyboard yes
