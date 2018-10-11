@@ -116,8 +116,20 @@ define sequence blocksequence
 
 define inline_script calc_slope
 	set description "Executes Python code"
-	set _run "var.avg = sum(var.pupilsizes) / len(var.pupilsizes)"
-	set _prepare ""
+	___run__
+	
+	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
+	var.slope = var.result.slope
+	
+	
+	
+	# for testing (first trial is always NA somehow)
+	#var.avg = sum(var.pupilsizes) / len(var.pupilsizes)
+	__end__
+	___prepare__
+	import numpy as np
+	from scipy import stats
+	__end__
 
 define inline_script collect_pupil_trace
 	set description "Executes Python code"
