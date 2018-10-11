@@ -1,7 +1,7 @@
 ---
-API: 2
-OpenSesame: 3.1.4
-Platform: nt
+API: 2.1
+OpenSesame: 3.2.5
+Platform: posix
 ---
 set width 1024
 set uniform_coordinates yes
@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "D:/usermodels/usermodels"
+set experiment_path "/Users/vashisthdalmia/Documents/GitHub/usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
@@ -36,15 +36,6 @@ set clock_backend legacy
 set canvas_backend xpyriment
 set bidi yes
 set background black
-
-define notepad about_this_template
-	__note__
-	This template already contains the basic structure of a typical experiment.
-	It consists of a practice phase, followed by an experimental phase. For more
-	information, please visit <http://osdoc.cogsci.nl/>
-	Have fun with OpenSesame!
-	__end__
-	set description "Some pointers to help you gest started!"
 
 define loop arithmetic
 	set source_file ""
@@ -97,12 +88,8 @@ define sketchpad arithmetic_task
 	set description "Displays stimuli"
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=always text="[question_no]" x=0 y=0 z_index=0
 
-define sketchpad blank_screen
-	set duration 4000
-	set description "Displays stimuli"
-
 define sketchpad blank_screen_1
-	set duration 4000
+	set duration 1
 	set description "Displays stimuli"
 
 define sequence blocksequence
@@ -117,7 +104,22 @@ define sequence blocksequence
 define inline_script calc_slope
 	set description "Executes Python code"
 	___run__
+	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
+	var.slope = var.result.slope
 	
+	
+	
+	# for testing (first trial is always NA somehow)
+	#var.avg = sum(var.pupilsizes) / len(var.pupilsizes)
+	__end__
+	___prepare__
+	import numpy as np
+	from scipy import stats
+	__end__
+
+define inline_script calc_slope_1
+	set description "Executes Python code"
+	___run__
 	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
 	var.slope = var.result.slope
 	
@@ -197,31 +199,7 @@ define sequence experiment
 	run collect_pupil_trace always
 	run training always
 	run end_of_practice always
-	run experimental_loop always
 	run end_of_experiment always
-
-define loop experimental_loop
-	set source_file ""
-	set source table
-	set skip 0
-	set repeat 1
-	set order random
-	set offset no
-	set item block_sequence
-	set description "A loop containing one or more experimental blocks"
-	set cycles 1
-	set continuous no
-	set column_order practice
-	set break_if_on_first yes
-	set break_if never
-	setcycle 0 practice no
-	run blocksequence
-
-define feedback feedback
-	set reset_variables yes
-	set duration keypress
-	set description "Provides feedback to the participant"
-	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Your average response time was [avg_rt]ms<br /><br />Your accuracy was [acc]%<br /><br />Press any key to continue" x=0 y=0 z_index=0
 
 define sketchpad fixation_cross
 	set duration 1500
@@ -236,10 +214,13 @@ define sketchpad fixation_cross_1
 define inline_script getdata
 	set description "Executes Python code"
 	___run__
-	sleep(1.5) # in seconds
-	var.pupilsizes = collectPupilTrace(200)
+	sleep(1) # in seconds
+	var.pupilsizes = collectPupilTrace(4000)
+	var.str_pupilsizes = ','.join([str(i) for i in var.pupilsizes])
 	__end__
-	set _prepare "from time import sleep"
+	___prepare__
+	from time import sleep
+	__end__
 
 define sketchpad instructions
 	set start_response_interval no
@@ -264,25 +245,18 @@ define form_text_display instructions2
 	widget 1 2 1 1 button text="[ok_text]"
 
 
-define keyboard_response keyboard_response
-	set timeout infinite
-	set flush yes
-	set event_type keypress
-	set duration keypress
-	set description "Collects keyboard responses"
-
 define sketchpad letter_task_1
-	set duration 2000
+	set duration 500
 	set description "Displays stimuli"
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=always text="[question_no]" x=0 y=0 z_index=0
 
-define logger logger
-	set description "Logs experimental data"
-	set auto_log yes
-
 define inline_script new_inline_script_1
 	set description "Executes Python code"
-	set _run "var.pupilsizes = collectPupilTrace(4000)"
+	___run__
+	sleep(.5) # in seconds
+	var.pupilsizes = collectPupilTrace(3500)
+	var.str_pupilsizes = ','.join([str(i) for i in var.pupilsizes])
+	__end__
 	set _prepare ""
 
 define logger new_logger
@@ -292,48 +266,6 @@ define logger new_logger
 define logger new_logger_1
 	set description "Logs experimental data"
 	set auto_log yes
-
-define loop new_loop
-	set source_file ""
-	set source table
-	set repeat 1
-	set order random
-	set description "Repeatedly runs another item"
-	set cycles 15
-	set continuous no
-	set break_if_on_first yes
-	set break_if never
-	setcycle 0 difficulty easy
-	setcycle 0 questin_no 1
-	setcycle 1 difficulty medium
-	setcycle 1 questin_no 1
-	setcycle 2 difficulty hard
-	setcycle 2 questin_no 1
-	setcycle 3 difficulty easy
-	setcycle 3 questin_no 2
-	setcycle 4 difficulty medium
-	setcycle 4 questin_no 2
-	setcycle 5 difficulty hard
-	setcycle 5 questin_no 2
-	setcycle 6 difficulty easy
-	setcycle 6 questin_no 3
-	setcycle 7 difficulty medium
-	setcycle 7 questin_no 3
-	setcycle 8 difficulty hard
-	setcycle 8 questin_no 3
-	setcycle 9 difficulty easy
-	setcycle 9 questin_no 4
-	setcycle 10 difficulty medium
-	setcycle 10 questin_no 4
-	setcycle 11 difficulty hard
-	setcycle 11 questin_no 4
-	setcycle 12 difficulty easy
-	setcycle 12 questin_no 5
-	setcycle 13 difficulty medium
-	setcycle 13 questin_no 5
-	setcycle 14 difficulty hard
-	setcycle 14 questin_no 5
-	run ""
 
 define pygaze_drift_correct new_pygaze_drift_correct
 	set ypos 0
@@ -358,12 +290,6 @@ define pygaze_log new_pygaze_log
 	set msg ""
 	set description "Writes information to the eye-tracker logfile"
 	set auto_log yes
-
-define pygaze_log new_pygaze_log_1
-	set throttle 2
-	set msg ""
-	set description "Writes information to the eye-tracker logfile"
-	set auto_log no
 
 define pygaze_log new_pygaze_log_2
 	set throttle 2
@@ -468,12 +394,6 @@ define loop reversal
 	setcycle 14 question_no lucifer
 	run trial_sequence_1
 
-define sketchpad sketchpad
-	set start_response_interval no
-	set duration 0
-	set description "Displays stimuli"
-	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
-
 define inline_script test
 	set description "Executes Python code"
 	___run__
@@ -485,11 +405,6 @@ define inline_script test
 define inline_script test1
 	set description "Executes Python code"
 	set _run "var.t0 = self.time()"
-	set _prepare ""
-
-define inline_script test2
-	set description "Executes Python code"
-	set _run "var.t1 = self.time() - var.t0()"
 	set _prepare ""
 
 define loop training
@@ -531,9 +446,10 @@ define sequence trial_sequence_1
 	run new_pygaze_start_recording_1 always
 	run fixation_cross_1 always
 	run letter_task_1 always
-	run new_inline_script_1 always
 	run blank_screen_1 always
+	run new_inline_script_1 always
 	run new_pygaze_log_2 always
 	run new_logger_1 always
 	run new_pygaze_stop_recording_1 always
+	run calc_slope_1 always
 
