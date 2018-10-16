@@ -119,13 +119,11 @@ define sequence blocksequence
 define inline_script calc_slope
 	set description "Executes Python code"
 	___run__
+	# Remove blinks first
+	var.pupilsizes = var.pupilsizes[var.pupilsizes != 0]
+	# Now calc slope
 	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
 	var.slope = var.result.slope
-	
-	
-	
-	# for testing (first trial is always NA somehow)
-	#var.avg = sum(var.pupilsizes) / len(var.pupilsizes)
 	__end__
 	___prepare__
 	import numpy as np
@@ -135,14 +133,11 @@ define inline_script calc_slope
 define inline_script calc_slope_1
 	set description "Executes Python code"
 	___run__
-	
+	# Remove blinks first
+	var.pupilsizes = var.pupilsizes[var.pupilsizes != 0]
+	#get slope
 	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
 	var.slope = var.result.slope
-	
-	
-	
-	# for testing (first trial is always NA somehow)
-	#var.avg = sum(var.pupilsizes) / len(var.pupilsizes)
 	__end__
 	___prepare__
 	import numpy as np
@@ -172,19 +167,22 @@ define inline_script collect_pupil_trace
 		returns:
 			A numpy array that with a dur/fd length.
 		"""
-		
+		count = 0;
 		t0 = self.time()
 		a = np.zeros(dur/fd)
 		_dt = 0
 		#df = open(('F:\Documents\HMC\User Models\pupildata.txt'),'a')
-		while _dt < dur:		
+		while _dt < dur:	
+			count = count+1;
 			if pylink != None:
 				ps = eyetracker.pupil_size()
 			else:
 				# Use Y coordinate of mouse
 				#ps = my_mouse.get_pos()[0][1]+var.height/2
+				
 				ps = 2
-			
+				if(count%2==0):
+					ps=0
 			dt = self.time()-t0
 	
 			a[int(_dt/fd):int(dt/fd)] = ps
