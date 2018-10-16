@@ -1,6 +1,6 @@
 ---
-API: 2
-OpenSesame: 3.1.4
+API: 2.1
+OpenSesame: 3.2.5
 Platform: nt
 ---
 set width 1024
@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "D:\\usermodels2\\usermodels"
+set experiment_path "C:\\Users\\lpater\\Documents\\usermodels\\usermodels2\\usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
@@ -53,34 +53,49 @@ define loop arithmetic
 	set break_if never
 	setcycle 0 difficulty easy
 	setcycle 0 question_no "2 + 4"
+	setcycle 0 tasktype arithmetic
 	setcycle 1 difficulty medium
 	setcycle 1 question_no "3x = 15"
+	setcycle 1 tasktype arithmetic
 	setcycle 2 difficulty hard
 	setcycle 2 question_no "4x - 2 = 10"
+	setcycle 2 tasktype arithmetic
 	setcycle 3 difficulty easy
 	setcycle 3 question_no "3 + 7"
+	setcycle 3 tasktype arithmetic
 	setcycle 4 difficulty medium
 	setcycle 4 question_no "2x = 6"
+	setcycle 4 tasktype arithmetic
 	setcycle 5 difficulty hard
 	setcycle 5 question_no "3x - 3 = 6"
+	setcycle 5 tasktype arithmetic
 	setcycle 6 difficulty easy
 	setcycle 6 question_no "4 + 3"
+	setcycle 6 tasktype arithmetic
 	setcycle 7 difficulty medium
 	setcycle 7 question_no "6x = 12"
+	setcycle 7 tasktype arithmetic
 	setcycle 8 difficulty hard
 	setcycle 8 question_no "3x - 5 = 10"
+	setcycle 8 tasktype arithmetic
 	setcycle 9 difficulty easy
 	setcycle 9 question_no "6 + 2"
+	setcycle 9 tasktype arithmetic
 	setcycle 10 difficulty medium
 	setcycle 10 question_no "4x = 16"
+	setcycle 10 tasktype arithmetic
 	setcycle 11 difficulty hard
 	setcycle 11 question_no "3x - 8 = 7"
+	setcycle 11 tasktype arithmetic
 	setcycle 12 difficulty easy
 	setcycle 12 question_no "1 + 8"
+	setcycle 12 tasktype arithmetic
 	setcycle 13 difficulty medium
 	setcycle 13 question_no "7x = 28"
+	setcycle 13 tasktype arithmetic
 	setcycle 14 difficulty hard
 	setcycle 14 question_no "7x - 3 = 18"
+	setcycle 14 tasktype arithmetic
 	run trial_sequence
 
 define sketchpad arithmetic_task
@@ -120,6 +135,7 @@ define inline_script calc_slope
 define inline_script calc_slope_1
 	set description "Executes Python code"
 	___run__
+	
 	var.result = stats.linregress(list(range(1,len(var.pupilsizes)+1)), var.pupilsizes)
 	var.slope = var.result.slope
 	
@@ -369,34 +385,49 @@ define loop reversal
 	set break_if never
 	setcycle 0 difficulty easy
 	setcycle 0 question_no cat
+	setcycle 0 tasktype reversal
 	setcycle 1 difficulty medium
 	setcycle 1 question_no demon
+	setcycle 1 tasktype reversal
 	setcycle 2 difficulty hard
 	setcycle 2 question_no exactly
+	setcycle 2 tasktype reversal
 	setcycle 3 difficulty easy
 	setcycle 3 question_no dog
+	setcycle 3 tasktype reversal
 	setcycle 4 difficulty medium
 	setcycle 4 question_no seven
+	setcycle 4 tasktype reversal
 	setcycle 5 difficulty hard
 	setcycle 5 question_no digital
+	setcycle 5 tasktype reversal
 	setcycle 6 difficulty easy
 	setcycle 6 question_no pen
+	setcycle 6 tasktype reversal
 	setcycle 7 difficulty medium
 	setcycle 7 question_no death
+	setcycle 7 tasktype reversal
 	setcycle 8 difficulty hard
 	setcycle 8 question_no meeting
+	setcycle 8 tasktype reversal
 	setcycle 9 difficulty easy
 	setcycle 9 question_no cup
+	setcycle 9 tasktype reversal
 	setcycle 10 difficulty medium
 	setcycle 10 question_no satan
+	setcycle 10 tasktype reversal
 	setcycle 11 difficulty hard
 	setcycle 11 question_no nuclear
+	setcycle 11 tasktype reversal
 	setcycle 12 difficulty easy
 	setcycle 12 question_no bed
+	setcycle 12 tasktype reversal
 	setcycle 13 difficulty medium
 	setcycle 13 question_no glass
+	setcycle 13 tasktype reversal
 	setcycle 14 difficulty hard
 	setcycle 14 question_no lucifer
+	setcycle 14 tasktype reversal
 	run trial_sequence_1
 
 define inline_script test
