@@ -1,7 +1,7 @@
 ---
 API: 2.1
 OpenSesame: 3.2.5
-Platform: posix
+Platform: nt
 ---
 set width 1024
 set uniform_coordinates yes
@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "/Users/vashisthdalmia/Documents/GitHub/usermodels"
+set experiment_path "C:/Users/Daan/Documents/GitHub/usermodels"
 set disable_garbage_collection yes
 set description "A template containing a practice and an experimental phase"
 set coordinates uniform
@@ -46,7 +46,7 @@ define loop arithmetic
 	set offset no
 	set item trial_sequence
 	set description "A single block of trials"
-	set cycles 15
+	set cycles 30
 	set continuous no
 	set column_order ""
 	set break_if_on_first yes
@@ -54,48 +54,123 @@ define loop arithmetic
 	setcycle 0 difficulty easy
 	setcycle 0 question_no "2 + 4"
 	setcycle 0 tasktype arithmetic
+	setcycle 0 new_column_1 ""
 	setcycle 1 difficulty medium
 	setcycle 1 question_no "3x = 15"
 	setcycle 1 tasktype arithmetic
+	setcycle 1 new_column_1 ""
 	setcycle 2 difficulty hard
 	setcycle 2 question_no "4x - 2 = 10"
 	setcycle 2 tasktype arithmetic
+	setcycle 2 new_column_1 ""
 	setcycle 3 difficulty easy
 	setcycle 3 question_no "3 + 7"
 	setcycle 3 tasktype arithmetic
+	setcycle 3 new_column_1 ""
 	setcycle 4 difficulty medium
 	setcycle 4 question_no "2x = 6"
 	setcycle 4 tasktype arithmetic
+	setcycle 4 new_column_1 ""
 	setcycle 5 difficulty hard
 	setcycle 5 question_no "3x - 3 = 6"
 	setcycle 5 tasktype arithmetic
+	setcycle 5 new_column_1 ""
 	setcycle 6 difficulty easy
 	setcycle 6 question_no "4 + 3"
 	setcycle 6 tasktype arithmetic
+	setcycle 6 new_column_1 ""
 	setcycle 7 difficulty medium
 	setcycle 7 question_no "6x = 12"
 	setcycle 7 tasktype arithmetic
+	setcycle 7 new_column_1 ""
 	setcycle 8 difficulty hard
 	setcycle 8 question_no "3x - 5 = 10"
 	setcycle 8 tasktype arithmetic
+	setcycle 8 new_column_1 ""
 	setcycle 9 difficulty easy
 	setcycle 9 question_no "6 + 2"
 	setcycle 9 tasktype arithmetic
+	setcycle 9 new_column_1 ""
 	setcycle 10 difficulty medium
 	setcycle 10 question_no "4x = 16"
 	setcycle 10 tasktype arithmetic
+	setcycle 10 new_column_1 ""
 	setcycle 11 difficulty hard
 	setcycle 11 question_no "3x - 8 = 7"
 	setcycle 11 tasktype arithmetic
+	setcycle 11 new_column_1 ""
 	setcycle 12 difficulty easy
 	setcycle 12 question_no "1 + 8"
 	setcycle 12 tasktype arithmetic
+	setcycle 12 new_column_1 ""
 	setcycle 13 difficulty medium
 	setcycle 13 question_no "7x = 28"
 	setcycle 13 tasktype arithmetic
+	setcycle 13 new_column_1 ""
 	setcycle 14 difficulty hard
 	setcycle 14 question_no "7x - 3 = 18"
 	setcycle 14 tasktype arithmetic
+	setcycle 14 new_column_1 ""
+	setcycle 15 difficulty easy
+	setcycle 15 question_no "4 + 3"
+	setcycle 15 tasktype arithmetic
+	setcycle 15 new_column_1 ""
+	setcycle 16 difficulty medium
+	setcycle 16 question_no "3x = 12"
+	setcycle 16 tasktype arithmetic
+	setcycle 16 new_column_1 ""
+	setcycle 17 difficulty hard
+	setcycle 17 question_no "2x + 5 = 17"
+	setcycle 17 tasktype arithmetic
+	setcycle 17 new_column_1 ""
+	setcycle 18 difficulty easy
+	setcycle 18 question_no "3 + 2"
+	setcycle 18 tasktype arithmetic
+	setcycle 18 new_column_1 ""
+	setcycle 19 difficulty medium
+	setcycle 19 question_no "7x = 56"
+	setcycle 19 tasktype arithmetic
+	setcycle 19 new_column_1 ""
+	setcycle 20 difficulty hard
+	setcycle 20 question_no "4x - 4 = 28"
+	setcycle 20 tasktype arithmetic
+	setcycle 20 new_column_1 ""
+	setcycle 21 difficulty easy
+	setcycle 21 question_no "7 + 2"
+	setcycle 21 tasktype arithmetic
+	setcycle 21 new_column_1 ""
+	setcycle 22 difficulty medium
+	setcycle 22 question_no "5x = 35"
+	setcycle 22 tasktype arithmetic
+	setcycle 22 new_column_1 ""
+	setcycle 23 difficulty hard
+	setcycle 23 question_no "8x - 4 = 4"
+	setcycle 23 tasktype arithmetic
+	setcycle 23 new_column_1 ""
+	setcycle 24 difficulty easy
+	setcycle 24 question_no "6 - 4"
+	setcycle 24 tasktype arithmetic
+	setcycle 24 new_column_1 ""
+	setcycle 25 difficulty medium
+	setcycle 25 question_no "4x = 24"
+	setcycle 25 tasktype arithmetic
+	setcycle 25 new_column_1 ""
+	setcycle 26 difficulty hard
+	setcycle 26 question_no "9x - 2 = 16"
+	setcycle 26 tasktype arithmetic
+	setcycle 26 new_column_1 ""
+	setcycle 27 difficulty easy
+	setcycle 27 question_no "5 + 6"
+	setcycle 27 tasktype arithmetic
+	setcycle 27 new_column_1 ""
+	setcycle 28 difficulty medium
+	setcycle 28 question_no "8x = 16"
+	setcycle 28 tasktype arithmetic
+	setcycle 28 new_column_1 ""
+	setcycle 29 difficulty hard
+	setcycle 29 question_no "5x - 8 = 14"
+	setcycle 29 tasktype arithmetic
+	setcycle 29 new_column_1 ""
 	run trial_sequence
 
 define sketchpad arithmetic_task
@@ -216,14 +291,30 @@ define sequence experiment
 	run end_of_experiment always
 
 define sketchpad fixation_cross
-	set duration 1500
+	set duration 2000
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
 
 define sketchpad fixation_cross_1
-	set duration 1500
+	set duration 2000
 	set description "Displays stimuli"
 	draw fixdot color=white show_if=always style=default x=0 y=0 z_index=0
+
+define inline_script get_baseline
+	set description "Executes Python code"
+	___run__
+	var.baselinetrace = collectPupilTrace(750)
+	var.str_baseline = ','.join([str(i) for i in var.baselinetrace])
+	__end__
+	set _prepare ""
+
+define inline_script get_baseline_1
+	set description "Executes Python code"
+	___run__
+	var.baselinetrace = collectPupilTrace(750)
+	var.str_baseline = ','.join([str(i) for i in var.baselinetrace])
+	__end__
+	set _prepare ""
 
 define inline_script getdata
 	set description "Executes Python code"
@@ -267,7 +358,7 @@ define form_text_display instructions2
 
 
 define sketchpad letter_task_1
-	set duration 750
+	set duration 1
 	set description "Displays stimuli"
 	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=always text="[question_no]" x=0 y=0 z_index=0
 
@@ -375,7 +466,7 @@ define loop reversal
 	set repeat 1
 	set order random
 	set description "Repeatedly runs another item"
-	set cycles 15
+	set cycles 30
 	set continuous no
 	set break_if_on_first yes
 	set break_if never
@@ -424,6 +515,51 @@ define loop reversal
 	setcycle 14 difficulty hard
 	setcycle 14 question_no lucifer
 	setcycle 14 tasktype reversal
+	setcycle 15 difficulty easy
+	setcycle 15 question_no pen
+	setcycle 15 tasktype reversal
+	setcycle 16 difficulty medium
+	setcycle 16 question_no quick
+	setcycle 16 tasktype reversal
+	setcycle 17 difficulty hard
+	setcycle 17 question_no puzzels
+	setcycle 17 tasktype reversal
+	setcycle 18 difficulty easy
+	setcycle 18 question_no sad
+	setcycle 18 tasktype reversal
+	setcycle 19 difficulty medium
+	setcycle 19 question_no jumps
+	setcycle 19 tasktype reversal
+	setcycle 20 difficulty hard
+	setcycle 20 question_no against
+	setcycle 20 tasktype reversal
+	setcycle 21 difficulty easy
+	setcycle 21 question_no mad
+	setcycle 21 tasktype reversal
+	setcycle 22 difficulty medium
+	setcycle 22 question_no jacks
+	setcycle 22 tasktype reversal
+	setcycle 23 difficulty hard
+	setcycle 23 question_no airline
+	setcycle 23 tasktype reversal
+	setcycle 24 difficulty easy
+	setcycle 24 question_no ten
+	setcycle 24 tasktype reversal
+	setcycle 25 difficulty medium
+	setcycle 25 question_no jumps
+	setcycle 25 tasktype reversal
+	setcycle 26 difficulty hard
+	setcycle 26 question_no arrival
+	setcycle 26 tasktype reversal
+	setcycle 27 difficulty easy
+	setcycle 27 question_no tan
+	setcycle 27 tasktype reversal
+	setcycle 28 difficulty medium
+	setcycle 28 question_no enzym
+	setcycle 28 tasktype reversal
+	setcycle 29 difficulty hard
+	setcycle 29 question_no believe
+	setcycle 29 tasktype reversal
 	run trial_sequence_1
 
 define inline_script test
@@ -462,6 +598,7 @@ define sequence trial_sequence
 	run new_pygaze_drift_correct always
 	run new_pygaze_start_recording always
 	run fixation_cross always
+	run get_baseline always
 	run arithmetic_task always
 	run getdata always
 	run calc_slope always
@@ -476,6 +613,7 @@ define sequence trial_sequence_1
 	run new_pygaze_start_recording_1 always
 	run fixation_cross_1 always
 	run letter_task_1 always
+	run get_baseline_1 always
 	run blank_screen_1 always
 	run getdata_1 always
 	run calc_slope_1 always
