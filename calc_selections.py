@@ -113,7 +113,7 @@ def run_pipeline(baselines, pupils):
 
 def main(subject):
     # the data you want to read
-    data = pd.read_csv("D:/usermodels/usermodels/Entire_Subject_Data/subject-" + subject + ".csv")
+    data = pd.read_csv("D:/usermodels/Entire_Subject_Data/subject-" + subject + ".csv")
 
     
     # select and preprocess all relevant data
@@ -121,6 +121,7 @@ def main(subject):
     task = data.tasktype.get_values()
     task = task[70]
     diff2 = data.difficulty2[70]
+    q1 = data.q1.values # options on the left side
 
     means_final = data.means_final[70]  # doesnt matter as long as it is in range of 60-80, duplicate array values
     means_final = preprocess_means_array(means_final,task,diff2)
@@ -144,8 +145,31 @@ def main(subject):
     for i in range(60,80):
         
         # 60 just because different indexing, clunky
+
+        # Decide which condition is on which side (dynamic case)
+        left = q1[i]
+   
+        if(task=="reversal"):
+            if(len(left) > 3 ):
+                # then we have the none-easy condition left side
+                c1 = 1
+                c2 = 0    # for indexing
+            else:
+                c1 = 0
+                c2 = 1
+        
+        if(task=="arithmetic"):
+            if(len(left) > 5 ):
+                c1 = 1
+                c2 = 0
+            else: 
+                c1 = 0
+                c2 = 1
+
+        
+        # 60 just because different indexing, clunky
         # in this case it is closer to the first mean
-        if(abs(means_final[0] - areas[i-60]) < means_final[1] - areas[i-60]):
+        if(abs(means_final[c1] - areas[i-60]) < abs(means_final[c2] - areas[i-60])):
             
             answer="yes"
         else:
@@ -169,4 +193,4 @@ def main(subject):
     
 if __name__ == '__main__':
     # fix_blinks()
-    main("leon")
+    main("bala")
